@@ -1,7 +1,6 @@
 const width = 960;
 const height = 600;
 
-// Load data
 const educationDataUrl = 'https://cdn.freecodecamp.org/testable-projects-fcc/data/choropleth_map/for_user_education.json';
 const countyDataUrl = 'https://cdn.freecodecamp.org/testable-projects-fcc/data/choropleth_map/counties.json';
 
@@ -12,21 +11,17 @@ Promise.all([d3.json(countyDataUrl), d3.json(educationDataUrl)])
 
         const path = d3.geoPath();
 
-        // Create SVG element
         const svg = d3.select("#map")
             .append("svg")
             .attr("width", width)
             .attr("height", height);
 
-        // Set color scale
         const colorScale = d3.scaleThreshold()
             .domain(d3.range(10, 70, 10))
             .range(d3.schemeBlues[7]);
 
-        // Convert education data to a map
         const educationMap = new Map(educationData.map(d => [d.fips, d]));
 
-        // Draw counties
         svg.append("g")
             .selectAll("path")
             .data(topojson.feature(countyData, countyData.objects.counties).features)
@@ -48,12 +43,10 @@ Promise.all([d3.json(countyDataUrl), d3.json(educationDataUrl)])
                 tooltip.transition().duration(500).style("opacity", 0);
             });
 
-        // Tooltip
         const tooltip = d3.select("body").append("div")
             .attr("id", "tooltip")
             .style("opacity", 0);
 
-        // Create legend
         const legend = d3.select("#legend");
 
         const legendWidth = 300;
